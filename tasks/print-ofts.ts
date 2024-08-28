@@ -17,15 +17,13 @@ import { task } from "hardhat/config";
 import { config } from "./config";
 import { get } from "../scripts/helpers";
 
-task(`print-ofts`, `Prints all the OFTs`)
-  .addParam("token", "either zai or maha")
-  .setAction(async ({ token }) => {
-    const networks = Object.keys(config);
-    const contractNameToken = token === "zai" ? "ZaiStablecoin" : "MAHA";
+task(`print-ofts`, `Prints all the OFTs`).setAction(async ({ token }) => {
+  const networks = Object.keys(config);
 
-    for (let index = 0; index < networks.length; index++) {
-      const network = networks[index];
-      const addr = get(contractNameToken, network);
-      console.log(network, addr);
-    }
-  });
+  for (let index = 0; index < networks.length; index++) {
+    const network = networks[index];
+    const remoteContractName = `ZeroToken${config[network].contract}`;
+    const addr = get(remoteContractName, network);
+    console.log(network, addr);
+  }
+});

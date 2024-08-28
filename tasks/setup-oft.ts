@@ -6,11 +6,10 @@
   npx hardhat setup-oft --network base
   npx hardhat setup-oft --network blast
   npx hardhat setup-oft --network bsc
-  npx hardhat setup-oft --network linea
-  npx hardhat setup-oft --network manta
   npx hardhat setup-oft --network xlayer
-  npx hardhat setup-oft --network mainnet
+  npx hardhat setup-oft --network linea
   npx hardhat setup-oft --network zircuit
+  npx hardhat setup-oft --network manta
 
  */
 import _ from "underscore";
@@ -53,7 +52,7 @@ task(`setup-oft`, `Sets up the OFT with the right DVNs`).setAction(
 
     const encoder = hre.ethers.AbiCoder.defaultAbiCoder();
 
-    const oftD = await hre.deployments.get("ZeroTokenOFT");
+    const oftD = await hre.deployments.get(`ZeroToken${c.contract}`);
     const oft = await hre.ethers.getContractAt(
       "@layerzerolabs/lz-evm-oapp-v2/contracts/oft/OFT.sol:OFT",
       oftD.address
