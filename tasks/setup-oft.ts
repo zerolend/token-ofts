@@ -1,16 +1,16 @@
 /**
 
-  Script to setup OFTs for the Zai and Maha tokens on the various networks.
+  Script to setup OFTs for the token on the various networks.
 
-  npx hardhat setup-oft --token zai --network arbitrum
-  npx hardhat setup-oft --token zai --network base
-  npx hardhat setup-oft --token zai --network blast
-  npx hardhat setup-oft --token zai --network bsc
-  npx hardhat setup-oft --token zai --network linea
-  npx hardhat setup-oft --token zai --network optimism
-  npx hardhat setup-oft --token zai --network xlayer
-  npx hardhat setup-oft --token zai --network mainnet
-  npx hardhat setup-oft --token zai --network scroll
+  npx hardhat setup-oft --network arbitrum
+  npx hardhat setup-oft --network base
+  npx hardhat setup-oft --network blast
+  npx hardhat setup-oft --network bsc
+  npx hardhat setup-oft --network linea
+  npx hardhat setup-oft --network manta
+  npx hardhat setup-oft --network xlayer
+  npx hardhat setup-oft --network mainnet
+  npx hardhat setup-oft --network zircuit
 
  */
 import _ from "underscore";
@@ -19,6 +19,8 @@ import { EnforcedOptionParamStruct } from "../types/@layerzerolabs/lz-evm-oapp-v
 import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { task } from "hardhat/config";
 import { waitForTx } from "../scripts/utils";
+import { get } from "../scripts/helpers";
+import { zeroPadValue } from "ethers";
 
 const _fetchAndSortDVNS = (
   conf: IL0Config,
@@ -35,14 +37,10 @@ const _fetchOptionalDVNs = (conf: IL0Config) => {
   return _.difference(dvns, conf.requiredDVNs);
 };
 
-task(`setup-oft`, `Sets up the OFT with the right DVNs`)
-  .addParam("token", "either zai or maha")
-  .setAction(async ({ token }, hre) => {
+task(`setup-oft`, `Sets up the OFT with the right DVNs`).setAction(
+  async ({ token }, hre) => {
     const c = config[hre.network.name];
     if (!c) throw new Error("cannot find connection");
-
-    const contractNameToken = token === "zai" ? "ZaiStablecoin" : "MAHA";
-    const contractName = `${contractNameToken}${c.contract}`;
 
     const remoteConnections = Object.keys(config).filter(
       (c) => c !== hre.network.name
@@ -55,10 +53,13 @@ task(`setup-oft`, `Sets up the OFT with the right DVNs`)
 
     const encoder = hre.ethers.AbiCoder.defaultAbiCoder();
 
-    const oftD = await hre.deployments.get(contractName);
-    const oft = await hre.ethers.getContractAt("OFT", oftD.address);
+    const oftD = await hre.deployments.get("ZeroTokenOFT");
+    const oft = await hre.ethers.getContractAt(
+      "@layerzerolabs/lz-evm-oapp-v2/contracts/oft/OFT.sol:OFT",
+      oftD.address
+    );
     const endpoint = await hre.ethers.getContractAt(
-      "IL0EndpointV2",
+      "contracts/IL0EndpointV2.sol:IL0EndpointV2",
       await oft.endpoint()
     );
 
@@ -92,6 +93,20 @@ task(`setup-oft`, `Sets up the OFT with the right DVNs`)
         5
       );
 
+      const remoteContractName = `ZeroToken${r.contract}`;
+
+      const remoteD = get(remoteContractName, remoteNetwork);
+      const remoteOft = zeroPadValue(remoteD, 32);
+
+      const peer = await oft.peers(r.eid);
+      console.log("received peer", peer);
+
+      if (peer.toLowerCase() != remoteOft.toLowerCase()) {
+        // if we can set the peer, we will set it here
+        console.log("setting peer for", remoteNetwork);
+        await waitForTx(await oft.setPeer(r.eid, remoteOft));
+      }
+
       if (requiredDVNs.length === 0 && optionalDVNs.length === 0) {
         console.log("no DVNs to set up for remote network", remoteNetwork);
         continue;
@@ -116,7 +131,10 @@ task(`setup-oft`, `Sets up the OFT with the right DVNs`)
         confirmations: r.confirmations,
         requiredDVNCount: requiredDVNs.length,
         optionalDVNCount: optionalDVNs.length,
-        optionalDVNThreshold: r.optionalDVNThreshold,
+        optionalDVNThreshold: Math.min(
+          c.optionalDVNThreshold,
+          optionalDVNs.length
+        ),
         requiredDVNs: requiredDVNs,
         optionalDVNs: optionalDVNs,
       };
@@ -184,4 +202,5 @@ task(`setup-oft`, `Sets up the OFT with the right DVNs`)
         await waitForTx(await oft.setEnforcedOptions(enforcedOptions));
       }
     }
-  });
+  }
+);

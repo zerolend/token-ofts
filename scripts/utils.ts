@@ -33,61 +33,6 @@ export async function verify(
   }
 }
 
-export async function deployProxy(
-  hre: HardhatRuntimeEnvironment,
-  implementation: string,
-  args: any[],
-  proxyAdmin: string,
-  name: string
-) {
-  const { deploy, save } = hre.deployments;
-  const { deployer } = await hre.getNamedAccounts();
-
-  const implementationD = await deploy(`${implementation}-Impl`, {
-    from: deployer,
-    contract: implementation,
-    skipIfAlreadyDeployed: true,
-    // autoMine: true,
-    // log: true,
-  });
-
-  const contract = await hre.ethers.getContractAt(
-    implementation,
-    implementationD.address
-  );
-
-  const argsInit = contract.interface.encodeFunctionData("initialize", args);
-
-  const proxy = await deploy(`${name}-Proxy`, {
-    from: deployer,
-    contract: "MAHAProxy",
-    skipIfAlreadyDeployed: true,
-    args: [implementationD.address, proxyAdmin, argsInit],
-    autoMine: true,
-    log: true,
-  });
-
-  await save(name, {
-    address: proxy.address,
-    abi: implementationD.abi,
-    args: args,
-  });
-
-  if (hre.network.name !== "hardhat") {
-    console.log("verifying contracts");
-    await hre.run("verify:verify", {
-      address: implementationD.address,
-      constructorArguments: [],
-    });
-    await hre.run("verify:verify", {
-      address: proxy.address,
-      constructorArguments: [implementationD.address, proxyAdmin, argsInit],
-    });
-  }
-
-  return proxy;
-}
-
 export async function deployContract(
   hre: HardhatRuntimeEnvironment,
   implementation: string,

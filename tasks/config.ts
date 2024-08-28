@@ -25,8 +25,10 @@ export type IL0ConfigKey =
   | "bsc"
   | "linea"
   | "mainnet"
-  | "optimism"
-  | "scroll"
+  | "manta"
+  | "zircuit"
+  // | "optimism"
+  // | "scroll"
   | "xlayer";
 
 export type IL0ConfigMapping = {
@@ -65,9 +67,27 @@ export const config: IL0ConfigMapping = {
     dvns: pluckDVNs("arbitrum"),
     requiredDVNs: ["LayerZero_Labs"],
   },
+  manta: {
+    eid: 30217,
+    contract: "OFT",
+    confirmations: 15,
+    optionalDVNThreshold: 2,
+    libraries: pluckLibraries("manta"),
+    dvns: pluckDVNs("manta"),
+    requiredDVNs: ["LayerZero_Labs"],
+  },
+  zircuit: {
+    eid: 30303,
+    contract: "OFT",
+    confirmations: 15,
+    optionalDVNThreshold: 2,
+    libraries: pluckLibraries("zircuit"),
+    dvns: pluckDVNs("zircuit"),
+    requiredDVNs: ["LayerZero_Labs"],
+  },
   linea: {
     eid: 30183,
-    contract: "OFT",
+    contract: "OFTAdapter",
     confirmations: 15,
     optionalDVNThreshold: 2,
     libraries: pluckLibraries("linea"),
@@ -76,7 +96,7 @@ export const config: IL0ConfigMapping = {
   },
   mainnet: {
     eid: 30101,
-    contract: "OFTAdapter",
+    contract: "OFT",
     confirmations: 5,
     optionalDVNThreshold: 2,
     libraries: pluckLibraries("ethereum"),
@@ -119,22 +139,22 @@ export const config: IL0ConfigMapping = {
     dvns: pluckDVNs("xlayer"),
     requiredDVNs: ["LayerZero_Labs"],
   },
-  scroll: {
-    eid: 30214,
-    contract: "OFT",
-    confirmations: 15,
-    optionalDVNThreshold: 2,
-    libraries: pluckLibraries("scroll"),
-    dvns: pluckDVNs("scroll"),
-    requiredDVNs: ["LayerZero_Labs"],
-  },
-  optimism: {
-    eid: 30111,
-    contract: "OFT",
-    confirmations: 15,
-    optionalDVNThreshold: 2,
-    libraries: pluckLibraries("optimism"),
-    dvns: pluckDVNs("optimism"),
-    requiredDVNs: ["LayerZero_Labs"],
-  },
+  // scroll: {
+  //   eid: 30214,
+  //   contract: "OFT",
+  //   confirmations: 15,
+  //   optionalDVNThreshold: 2,
+  //   libraries: pluckLibraries("scroll"),
+  //   dvns: pluckDVNs("scroll"),
+  //   requiredDVNs: ["LayerZero_Labs"],
+  // },
+  // optimism: {
+  //   eid: 30111,
+  //   contract: "OFT",
+  //   confirmations: 15,
+  //   optionalDVNThreshold: 2,
+  //   libraries: pluckLibraries("optimism"),
+  //   dvns: pluckDVNs("optimism"),
+  //   requiredDVNs: ["LayerZero_Labs"],
+  // },
 };

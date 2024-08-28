@@ -88,6 +88,7 @@ const config: HardhatUserConfig = {
     bsc: _network("https://bsc-dataseed1.bnbchain.org"),
     blast: _network("https://rpc.blast.io"),
     linea: _network("https://rpc.linea.build"),
+    manta: _network("https://pacific-rpc.manta.network/http"),
     mainnet: _network("https://rpc.ankr.com/eth"),
     zircuit: _network("https://zircuit-mainnet.drpc.org"),
     optimism: _network("https://mainnet.optimism.io"),
@@ -107,6 +108,8 @@ const config: HardhatUserConfig = {
       blast: process.env.BLASTSCAN_KEY || "",
       bsc: process.env.BSCSCAN_KEY || "",
       linea: process.env.LINEASCAN_KEY || "",
+      manta: "test",
+      zircuit: "test",
       optimisticEthereum: process.env.OP_ETHERSCAN_KEY || "",
       scroll: process.env.SCROLLSCAN_KEY || "",
       arbitrumOne: process.env.ARBISCAN_KEY || "",
@@ -144,6 +147,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.scrollscan.com/api",
           browserURL: "https://scrollscan.com",
+        },
+      },
+      {
+        network: "manta",
+        chainId: 169,
+        urls: {
+          apiURL: "https://pacific-explorer.manta.network/api",
+          browserURL: "https://pacific-explorer.manta.network",
         },
       },
     ],

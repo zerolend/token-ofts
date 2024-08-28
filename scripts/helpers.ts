@@ -4,7 +4,7 @@ import path from "path";
 
 export function get(name: string, network: string): string {
   const data = fs.readFileSync(
-    path.resolve(__dirname, `../../deployments/${network}/${name}.json`)
+    path.resolve(__dirname, `../deployments/${network}/${name}.json`)
   );
 
   const res = JSON.parse(data.toString()).address as any as string;
@@ -14,6 +14,6 @@ export function get(name: string, network: string): string {
 
 export function existsD(name: string, network: string): boolean {
   return fs.existsSync(
-    path.resolve(__dirname, `../../deployments/${network}/${name}.json`)
+    path.resolve(__dirname, `../deployments/${network}/${name}.json`)
   );
 }
