@@ -10,6 +10,7 @@
   npx hardhat setup-oft --network linea
   npx hardhat setup-oft --network zircuit
   npx hardhat setup-oft --network manta
+  npx hardhat setup-oft --network mainnet
 
  */
 import _ from "underscore";

@@ -2,14 +2,14 @@
 
   Script to send a test OFT to a target network
 
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork arbitrum  --network linea
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork base  --network linea
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork blast  --network linea
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork bsc  --network linea
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork zircuit  --network linea
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork manta  --network linea
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork xlayer  --network linea
-  npx hardhat test-oft-adapter --amt 1 --targetnetwork mainnet  --network linea
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network arbitrum
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network base
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network blast
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network bsc
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network zircuit
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network manta
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network xlayer
+  npx hardhat test-oft-adapter --amt 1 --targetnetwork linea  --network mainnet
 
  */
 import { task } from "hardhat/config";
@@ -33,6 +33,16 @@ task(`test-oft-adapter`, `Tests the mainnet OFT adapter`)
       zaiD.address
     );
     const [deployer] = await hre.ethers.getSigners();
+
+    console.log("i am", deployer.address);
+    console.log(
+      "sending",
+      amt,
+      "tokens to",
+      targetnetwork,
+      "from",
+      hre.network.name
+    );
 
     const source = config[hre.network.name];
     const target = config[targetnetwork];
@@ -67,7 +77,8 @@ task(`test-oft-adapter`, `Tests the mainnet OFT adapter`)
 
     if (
       hre.network.name === "linea" &&
-      (await erc20.allowance(deployer.address, oftAdapter.target)) == 0
+      (await erc20.allowance(deployer.address, oftAdapter.target)) <
+        tokensToSend
     ) {
       // If the source network is mainnet, we need to approve the OFT adapter to spend the tokens
       await waitForTx(await erc20.approve(oftAdapter.target, MaxUint256));
