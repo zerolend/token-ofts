@@ -10,7 +10,6 @@
   npx hardhat setup-oft --network linea
   npx hardhat setup-oft --network zircuit
   npx hardhat setup-oft --network manta
-
  */
 import _ from "underscore";
 import { config, IL0Config, IL0ConfigKey } from "./config";
@@ -37,7 +36,7 @@ const _fetchOptionalDVNs = (conf: IL0Config) => {
 };
 
 task(`setup-oft`, `Sets up the OFT with the right DVNs`).setAction(
-  async ({ token }, hre) => {
+  async ({}, hre) => {
     const c = config[hre.network.name];
     if (!c) throw new Error("cannot find connection");
 
