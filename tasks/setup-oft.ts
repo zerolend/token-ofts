@@ -1,5 +1,4 @@
 /**
-
   Script to setup OFTs for the token on the various networks.
 
   npx hardhat setup-oft --network arbitrum
@@ -10,6 +9,7 @@
   npx hardhat setup-oft --network linea
   npx hardhat setup-oft --network zircuit
   npx hardhat setup-oft --network manta
+  npx hardhat setup-oft --network mainnet
  */
 import _ from "underscore";
 import { config, IL0Config, IL0ConfigKey } from "./config";
