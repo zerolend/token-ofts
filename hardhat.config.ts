@@ -109,7 +109,7 @@ const config: HardhatUserConfig = {
       bsc: process.env.BSCSCAN_KEY || "",
       linea: process.env.LINEASCAN_KEY || "",
       manta: "test",
-      zircuit: "test",
+      zircuit: process.env.ZIRCUITSCAN_KEY || "",
       optimisticEthereum: process.env.OP_ETHERSCAN_KEY || "",
       scroll: process.env.SCROLLSCAN_KEY || "",
       arbitrumOne: process.env.ARBISCAN_KEY || "",
@@ -123,6 +123,14 @@ const config: HardhatUserConfig = {
           apiURL:
             "https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER",
           browserURL: "https://www.oklink.com/xlayer",
+        },
+      },
+      {
+        network: "zircuit",
+        chainId: 48900,
+        urls: {
+          apiURL: "https://explorer.zircuit.com/api/contractVerifyHardhat",
+          browserURL: "https://explorer.zircuit.com",
         },
       },
       {
