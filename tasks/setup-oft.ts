@@ -155,9 +155,10 @@ task(`setup-oft`, `Sets up the OFT with the right DVNs`).setAction(
 
       const isPeerZero = peer.toLowerCase() == zeroPeer.toLowerCase();
       const deploymentExists = await existsD(remoteContractName, remoteNetwork);
+      const notLineaRoute = r.eid != 30183 && c.eid != 30183;
 
       // if the peer is not zero or the destination is not mainnet, we should remove the peer
-      const shouldRemovePeer = !deploymentExists;
+      const shouldRemovePeer = !deploymentExists || notLineaRoute;
 
       if (shouldRemovePeer) {
         if (isPeerZero) {

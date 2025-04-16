@@ -18,8 +18,6 @@ task(`transfer-ofts-ownership`).setAction(async (_, hre) => {
   const c = config[hre.network.name];
   if (!c) throw new Error("cannot find connection");
 
-  // await hre.run("setup-oft", { token });
-
   const [deployer] = await hre.ethers.getSigners();
   const oftD = await hre.deployments.get(`ZeroToken${c.contract}`);
 
@@ -40,7 +38,9 @@ task(`transfer-ofts-ownership`).setAction(async (_, hre) => {
   );
 
   console.log("hit");
-  const timelockD = await hre.deployments.getOrNull("MAHATimelockController");
+  const timelockD = await hre.deployments.getOrNull(
+    "TimelockControllerEnumerable"
+  );
   const safeD = await hre.deployments.get("GnosisSafe");
 
   const owner = await oft.owner();
