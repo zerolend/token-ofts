@@ -94,6 +94,7 @@ const config: HardhatUserConfig = {
     optimism: _network("https://mainnet.optimism.io"),
     scroll: _network("https://rpc.ankr.com/scroll", 1100000000),
     sepolia: _network("https://rpc2.sepolia.org"),
+    berachain: _network("https://rpc.berachain.com"), // 0.1 gwei
     xlayer: _network("https://xlayerrpc.okx.com"),
   },
   namedAccounts: {
@@ -114,8 +115,17 @@ const config: HardhatUserConfig = {
       scroll: process.env.SCROLLSCAN_KEY || "",
       arbitrumOne: process.env.ARBISCAN_KEY || "",
       xlayer: "test",
+      berachain: process.env.BERASCAN_KEY || "",
     },
     customChains: [
+      {
+        network: "berachain",
+        chainId: 80094,
+        urls: {
+          apiURL: "https://api.berascan.com/api",
+          browserURL: "https://berascan.com/",
+        },
+      },
       {
         network: "xlayer",
         chainId: 196,

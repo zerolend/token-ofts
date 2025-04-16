@@ -29,7 +29,8 @@ export type IL0ConfigKey =
   | "zircuit"
   // | "optimism"
   // | "scroll"
-  | "xlayer";
+  | "xlayer"
+  | "berachain";
 
 export type IL0ConfigMapping = {
   [key in IL0ConfigKey]: IL0Config;
@@ -63,8 +64,17 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("arbitrum"),
+    libraries: pluckLibraries("Arbitrum-Mainnet"),
     dvns: pluckDVNs("arbitrum"),
+    requiredDVNs: ["LayerZero_Labs"],
+  },
+  berachain: {
+    eid: 30362,
+    contract: "OFT",
+    confirmations: 15,
+    optionalDVNThreshold: 2,
+    libraries: pluckLibraries("Berachain-Mainnet"),
+    dvns: pluckDVNs("bera"),
     requiredDVNs: ["LayerZero_Labs"],
   },
   manta: {
@@ -72,7 +82,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("manta"),
+    libraries: pluckLibraries("Manta-Pacific-Mainnet"),
     dvns: pluckDVNs("manta"),
     requiredDVNs: ["LayerZero_Labs"],
   },
@@ -81,7 +91,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("zircuit"),
+    libraries: pluckLibraries("Zircuit-Mainnet"),
     dvns: pluckDVNs("zircuit"),
     requiredDVNs: ["LayerZero_Labs"],
   },
@@ -90,7 +100,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFTAdapter",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("linea"),
+    libraries: pluckLibraries("Linea-Mainnet"),
     dvns: pluckDVNs("linea"),
     requiredDVNs: ["LayerZero_Labs"],
   },
@@ -99,7 +109,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 5,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("ethereum"),
+    libraries: pluckLibraries("Ethereum-Mainnet"),
     dvns: pluckDVNs("ethereum"),
     requiredDVNs: ["LayerZero_Labs"],
   },
@@ -108,7 +118,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("base"),
+    libraries: pluckLibraries("Base-Mainnet"),
     dvns: pluckDVNs("base"),
     requiredDVNs: ["LayerZero_Labs"],
   },
@@ -117,7 +127,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("blast"),
+    libraries: pluckLibraries("Blast-Mainnet"),
     dvns: pluckDVNs("blast"),
     requiredDVNs: ["LayerZero_Labs"],
   },
@@ -126,7 +136,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("bsc"),
+    libraries: pluckLibraries("BNB-Smart-Chain-Mainnet"),
     dvns: pluckDVNs("bsc"),
     requiredDVNs: ["LayerZero_Labs"],
   },
@@ -135,7 +145,7 @@ export const config: IL0ConfigMapping = {
     contract: "OFT",
     confirmations: 15,
     optionalDVNThreshold: 2,
-    libraries: pluckLibraries("xlayer"),
+    libraries: pluckLibraries("X-Layer-Mainnet"),
     dvns: pluckDVNs("xlayer"),
     requiredDVNs: ["LayerZero_Labs"],
   },
